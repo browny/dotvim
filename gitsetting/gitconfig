@@ -1,0 +1,69 @@
+[user]
+	name = Browny Lin
+	email = shlin1983@gmail.com
+
+[core]
+	excludesfile = ~/.gitignore
+	pager = less -FXrS -x4
+	filemode = false
+	whitespace = cr-at-eol
+	editor = vim
+
+[alias]
+	ch = checkout
+	cm = commit
+	di = diff --unified=10
+	dc = diff --cached
+	st = status
+	br = branch
+	pr = pull --rebase
+	fp = format-patch
+	chep = cherry-pick
+	rh = reset --hard
+	merge = merge -s recursive -X patience
+	compare = log --left-right --graph --cherry-pick --oneline
+	contains = branch -a --contains
+	unstage = reset HEAD
+	uncommit = reset --soft HEAD^
+	amend = commit --amend
+	apply = apply --whitespace fix
+	logp = log -p
+	logb = log --author=Browny --no-merges
+	showfile = show --pretty="format:" --name-only
+	difffile = diff --pretty="format:" --name-only
+	lg = log --color --graph --pretty=format:'%Cred%h%Creset %C(bold blue)<%an>%Creset %C(yellow)%d%Creset %s %Cgreen(%cr)' --abbrev-commit
+	report = log --author=Browny --since='2 sunday ago' --until='1 sunday ago' --format='%Cgreen%ci%Creset %s%Creset' --no-merges
+	sortbytime = for-each-ref --sort=-committerdate --format='%(committerdate:short) %(authorname) %(refname:short)'
+
+	who = shortlog -n -s --no-merges
+	g = grep -n --color -E
+	com = "!sh -c \"bug=`git symbolic-ref HEAD|sed s#refs/heads/##`; git commit -em \\\"BUG: \\${bug}\\\"\""
+	
+[push]
+# Only push branches that have been
+# set up to track a remote branch.
+	default = current
+
+[color]
+	ui = auto
+	diff = auto
+	branch = auto
+    status = auto
+
+[color "diff"]
+	meta = blue
+	frag = magenta
+	old = red bold
+	new = green bold
+    
+[color "branch"]
+	current = cyan bold
+	local = yellow
+	remote = green
+
+[giggle]
+	main-window-maximized = true
+	main-window-geometry = 492x168+2279+382
+	history-view-vpane-position = 457
+	file-view-vpane-position = 1012
+	main-window-view = HistoryView

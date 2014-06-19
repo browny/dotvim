@@ -1,0 +1,42 @@
+
+# --- general setting --- #
+export TERM="xterm-256color"
+export GREP_OPTIONS="--exclude=cscope.* --exclude=*~ --exclude=tags --exclude=*.~*"
+PS1="[\[\033[32m\]\w]\[\033[0m\]\[\033[1;36m\]\[\033[1;33m\]$ \[\033[0m\]"
+PROMPT_COMMAND='echo -ne "\033]0;${PWD}\007"'
+
+# --- bash alias --- #
+alias grepsrc='grep -rn --exclude-dir={.git,.svn} --include=\*.{c,cpp,h,java}'
+alias tmux="tmux -2"
+
+# get rid of command not found
+alias cd..='cd ..'
+
+# a quick way to get out of current directory
+alias ..='cd ..'
+alias ...='cd ../../'
+alias ....='cd ../../../'
+alias .4='cd ../../../../'
+alias .5='cd ../../../../../'
+alias .6='cd ../../../../../../'
+alias .7='cd ../../../../../../../'
+alias .8='cd ../../../../../../../../'
+
+# Change directory to git root repository folder
+alias git-root='root="$(git rev-parse --show-cdup)"; [ -n "$root" ] && cd "$root"'
+
+# Tail with search highlight (t /path/file word will tail follow /path/file and highlight any "word")
+t() { tail -f $1 | sed "s/$2/\x1B[1;31;43m&\x1B[0m/g"; }
+
+# View most recently changed file in directory
+llast () {
+	less < `ls -tr | tail -n 1`;
+}
+
+# Ack
+alias Ack='ack-grep'
+
+# --- vim alias --- #
+alias gencscope='find . -name '*.cpp' -o -name '*.h' -o -name '*.c' -o -name '*.java' > cscope.files; cscope -Rbkq -i cscope.files;'
+alias gentags='ctags -R --c++-kinds=+px --fields=+iaS --extra=+q .'
+
