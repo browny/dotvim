@@ -4,6 +4,8 @@ export TERM="xterm-256color"
 export GREP_OPTIONS="--exclude=cscope.* --exclude=*~ --exclude=tags --exclude=*.~*"
 PS1="[\[\033[32m\]\w]\[\033[0m\]\[\033[1;36m\]\[\033[1;33m\]$ \[\033[0m\]"
 PROMPT_COMMAND='echo -ne "\033]0;${PWD}\007"'
+alias c='clear'
+alias sshlinode="ssh root@106.187.102.193"
 
 # --- bash alias --- #
 alias grepsrc='grep -rn --exclude-dir={.git,.svn} --include=\*.{c,cpp,h,java}'
