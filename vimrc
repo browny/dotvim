@@ -62,6 +62,8 @@ set showcmd
 set smartcase
 set smartindent
 set splitright
+set visualbell
+set noerrorbells
 
 set backspace=2
 " set clipboard=unnamedplus
@@ -74,6 +76,7 @@ set pastetoggle=<F2>
 set scrolloff=999 " keep cursor at center when page up/down
 set shiftwidth=4
 set tabstop=4
+set textwidth=100
 "set expandtab
 
 autocmd Filetype gitcommit setlocal spell textwidth=72 " git commit format check
@@ -329,7 +332,7 @@ let g:vimwiki_list = [{'path': '~/Dropbox/vimwiki/',
 			\'template_path': '~/Dropbox/vimwiki/template/',
 			\'template_default': 'default',
 			\'template_ext': '.html',
-			\'path_html': '~/Dropbox/github/vimwiki/'}]
+			\'path_html': '~/Dropbox/repo/vimwiki/'}]
 
 " 對中文用戶來說，我們並不怎麼需要駝峰英文成為維基詞條
 let g:vimwiki_camel_case = 0
