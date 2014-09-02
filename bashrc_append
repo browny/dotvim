@@ -1,15 +1,34 @@
+if [ -f $(brew --prefix)/etc/bash_completion ]; then
+	. $(brew --prefix)/etc/bash_completion
+fi 
+
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+
+# --- PATH --- #
+#export JAVA_HOME=$(/usr/libexec/java_home)
+export JAVA_HOME="`/usr/libexec/java_home -v '1.7*'`"
+export JRE_HOME="/Library/Java/JavaVirtualMachines/jdk1.7.0.jdk/Contents/Home/jre"
+export MYSQL_HOME="/usr/local/Cellar/mysql55/5.5.30"
+export M2_HOME="/Users/brownylin/Java/apache-maven-3.1.1"
+export MAVEN_OPTS="-Xmx1024m -XX:MaxPermSize=256m"
+export ANDROID_SDK="/Users/brownylin/Java/adt-bundle-mac-x86_64-20140321/sdk"
+
+export PATH=$PATH:/usr/bin:$JRE_HOME:$M2_HOME/bin:$MYSQL_HOME/bin:$ANDROID_SDK/platform-tools:$ANDROID_SDK/tools
 
 # --- general setting --- #
 export TERM="xterm-256color"
 export GREP_OPTIONS="--exclude=cscope.* --exclude=*~ --exclude=tags --exclude=*.~*"
 PS1="[\[\033[32m\]\w]\[\033[0m\]\[\033[1;36m\]\[\033[1;33m\]$ \[\033[0m\]"
 PROMPT_COMMAND='echo -ne "\033]0;${PWD}\007"'
+EDITOR=/usr/local/bin/vim
 alias c='clear'
 alias sshlinode="ssh root@106.187.102.193"
 
 # --- bash alias --- #
 alias grepsrc='grep -rn --exclude-dir={.git,.svn} --include=\*.{c,cpp,h,java}'
 alias tmux="tmux -2"
+alias ls="ls -GFlash"
 
 # get rid of command not found
 alias cd..='cd ..'
@@ -21,24 +40,25 @@ alias ....='cd ../../../'
 alias .4='cd ../../../../'
 alias .5='cd ../../../../../'
 alias .6='cd ../../../../../../'
-alias .7='cd ../../../../../../../'
-alias .8='cd ../../../../../../../../'
-
-# Change directory to git root repository folder
-alias git-root='root="$(git rev-parse --show-cdup)"; [ -n "$root" ] && cd "$root"'
-
-# Tail with search highlight (t /path/file word will tail follow /path/file and highlight any "word")
-t() { tail -f $1 | sed "s/$2/\x1B[1;31;43m&\x1B[0m/g"; }
-
-# View most recently changed file in directory
-llast () {
-	less < `ls -tr | tail -n 1`;
-}
 
 # Ack
 alias Ack='ack-grep'
 
 # --- vim alias --- #
-alias gencscope='find . -name '*.cpp' -o -name '*.h' -o -name '*.c' -o -name '*.java' > cscope.files; cscope -Rbkq -i cscope.files;'
+alias gencscope='find . -name '*.cpp' -o -name '*.h' -o -name '*.c' -o -name '*.java' > temp; grep -v "Test" temp > cscope.files; cscope -Rbkq -i cscope.files;'
 alias gentags='ctags -R --c++-kinds=+px --fields=+iaS --extra=+q .'
 
+# http://jeroenjanssens.com/2013/08/16/quickly-navigate-your-filesystem-from-the-command-line.html
+export MARKPATH=$HOME/.marks
+function jump { 
+    cd -P "$MARKPATH/$1" 2>/dev/null || echo "No such mark: $1"
+}
+function mark { 
+    mkdir -p "$MARKPATH"; ln -s "$(pwd)" "$MARKPATH/$1"
+}
+function unmark { 
+    rm -i "$MARKPATH/$1"
+}
+function marks {
+    \ls -l "$MARKPATH" | tail -n +2 | sed 's/  / /g' | cut -d' ' -f9- | awk -F ' -> ' '{printf "%-10s -> %s\n", $1, $2}'
+}

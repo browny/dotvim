@@ -31,6 +31,8 @@ Bundle 'tpope/vim-surround'
 Bundle 'goldfeld/vim-seek'
 Bundle 'rking/ag.vim'
 Bundle 'othree/xml.vim'
+Bundle "pangloss/vim-javascript"
+Bundle "othree/html5.vim"
 
 " vim-scripts repos
 Bundle 'dbext.vim'
@@ -76,7 +78,6 @@ set pastetoggle=<F2>
 set scrolloff=999 " keep cursor at center when page up/down
 set shiftwidth=4
 set tabstop=4
-set textwidth=100
 "set expandtab
 
 autocmd Filetype gitcommit setlocal spell textwidth=72 " git commit format check

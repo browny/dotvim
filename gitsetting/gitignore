@@ -23,6 +23,7 @@ temp
 log/
 target/
 *.sql
+WEB-INF/
 
 # Python
 *.pyc

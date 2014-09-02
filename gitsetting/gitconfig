@@ -1,9 +1,9 @@
 [user]
 	name = Browny Lin
-	email = shlin1983@gmail.com
+	email = browny@bonopoints.com
 
 [core]
-	excludesfile = ~/.gitignore
+	excludesfile = /Users/brownylin/.gitignore
 	pager = less -FXrS -x4
 	filemode = false
 	whitespace = cr-at-eol
@@ -21,7 +21,7 @@
 	chep = cherry-pick
 	rh = reset --hard
 	merge = merge -s recursive -X patience
-	compare = log --left-right --graph --cherry-pick --oneline
+	compare = log --left-right --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --no-merges --date=relative
 	contains = branch -a --contains
 	unstage = reset HEAD
 	uncommit = reset --soft HEAD^
@@ -38,7 +38,7 @@
 	who = shortlog -n -s --no-merges
 	g = grep -n --color -E
 	com = "!sh -c \"bug=`git symbolic-ref HEAD|sed s#refs/heads/##`; git commit -em \\\"BUG: \\${bug}\\\"\""
-	
+
 [push]
 # Only push branches that have been
 # set up to track a remote branch.
@@ -55,7 +55,7 @@
 	frag = magenta
 	old = red bold
 	new = green bold
-    
+
 [color "branch"]
 	current = cyan bold
 	local = yellow
