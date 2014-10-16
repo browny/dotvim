@@ -67,3 +67,7 @@
 	history-view-vpane-position = 457
 	file-view-vpane-position = 1012
 	main-window-view = HistoryView
+[github]
+	user = browny
+[ghi]
+	token = !security find-internet-password -a  -s github.com -l 'ghi token' -w

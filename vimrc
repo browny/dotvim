@@ -15,7 +15,7 @@ Bundle 'gmarik/vundle'
 " original repos on github
 Bundle 'christoomey/vim-tmux-navigator'
 Bundle 'elzr/vim-json'
-Bundle 'ervandew/supertab'
+" Bundle 'ervandew/supertab'
 Bundle 'fholgado/minibufexpl.vim'
 Bundle 'godlygeek/tabular'
 Bundle 'junegunn/seoul256.vim'
@@ -33,11 +33,18 @@ Bundle 'rking/ag.vim'
 Bundle 'othree/xml.vim'
 Bundle "pangloss/vim-javascript"
 Bundle "othree/html5.vim"
+Bundle "tpope/vim-unimpaired"
+Bundle "Valloric/YouCompleteMe"
+Bundle "marijnh/tern_for_vim"
+Bundle "moll/vim-node"
+Bundle "stephpy/vim-yaml"
+Bundle "tpope/vim-dispatch"
+
 
 " vim-scripts repos
 Bundle 'dbext.vim'
 Bundle 'L9'
-Bundle 'OmniCppComplete'
+" Bundle 'OmniCppComplete'
 " non github repos
 
 " git repos on your local machine (ie. when working on your own plugin)
@@ -69,7 +76,7 @@ set noerrorbells
 
 set backspace=2
 " set clipboard=unnamedplus
-set completeopt+=longest
+" set completeopt+=longest
 set encoding=utf-8
 set fileencodings=utf-8,cp950
 set history=1000
@@ -83,6 +90,9 @@ set tabstop=4
 autocmd Filetype gitcommit setlocal spell textwidth=72 " git commit format check
 au BufNewFile,BufRead *.gradle setf groovy
 
+let g:ycm_add_preview_to_completeopt=0
+let g:ycm_confirm_extra_conf=0
+set completeopt-=preview
 
 "// --- Appearance --- //
 colorscheme seoul256
@@ -206,17 +216,17 @@ map f :call ShowFuncName() <CR>
 " quickfix window
 " How: '<leader>+q' shows quickfix window
 " *** --------------- ***
-command -bang -nargs=? QFix call QFixToggle(<bang>0)
-function! QFixToggle(forced)
-	if exists("g:qfix_win") && a:forced == 0
-	cclose
-	unlet g:qfix_win
-	else
-	copen 10
-	let g:qfix_win = bufnr("$")
-	endif
-endfunction
-nnoremap <leader>q :QFix<CR>
+" command -bang -nargs=? QFix call QFixToggle(<bang>0)
+" function! QFixToggle(forced)
+" 	if exists("g:qfix_win") && a:forced == 0
+" 	cclose
+" 	unlet g:qfix_win
+" 	else
+" 	copen 10
+" 	let g:qfix_win = bufnr("$")
+" 	endif
+" endfunction
+" nnoremap <leader>q :QFix<CR>
 
 
 " // === Plugins Start === //
@@ -224,8 +234,8 @@ nnoremap <leader>q :QFix<CR>
 " // --- Omni-Completion --- //
 " If you prefer the Omni-Completion tip window to close when a selection is
 " made, these lines close it on movement in insert mode or when leaving insert mode
-autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
-autocmd InsertLeave * if pumvisible() == 0|pclose|endif
+" autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
+" autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 
 
 "// --- Vim indent guide plugin --- //
@@ -357,10 +367,10 @@ nmap <leader>q :%!/Users/brownylin/Dropbox/Markdown.pl --html4tags <cr>
 
 
 " // --- Supertab plugin --- //
-let g:SuperTabMappingForward="<tab>"
-let g:SuperTabLongestEnhanced = 1
-let g:SuperTabLongestHighlight = 1
-let g:SuperTabDefaultCompletionType = "context"
+" let g:SuperTabMappingForward="<tab>"
+" let g:SuperTabLongestEnhanced = 1
+" let g:SuperTabLongestHighlight = 1
+" let g:SuperTabDefaultCompletionType = "context"
 
 
 "// --- CSCOPE plugin ---//
