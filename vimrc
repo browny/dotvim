@@ -13,32 +13,31 @@ Bundle 'gmarik/vundle'
 " My Bundles here:
 "
 " original repos on github
+Bundle 'Townk/vim-autoclose'
+Bundle 'Valloric/YouCompleteMe'
 Bundle 'christoomey/vim-tmux-navigator'
 Bundle 'elzr/vim-json'
-" Bundle 'ervandew/supertab'
 Bundle 'fholgado/minibufexpl.vim'
 Bundle 'godlygeek/tabular'
+Bundle 'haya14busa/incsearch.vim'
 Bundle 'junegunn/seoul256.vim'
 Bundle 'kien/ctrlp.vim'
+Bundle 'marijnh/tern_for_vim'
 Bundle 'mileszs/ack.vim'
+Bundle 'moll/vim-node'
+Bundle 'othree/html5.vim'
+Bundle 'othree/xml.vim'
+Bundle 'pangloss/vim-javascript'
 Bundle 'plasticboy/vim-markdown'
+Bundle 'rking/ag.vim'
 Bundle 'scrooloose/nerdtree'
+Bundle 'stephpy/vim-yaml'
 Bundle 'tomtom/tcomment_vim'
-Bundle 'Townk/vim-autoclose'
+Bundle 'tpope/vim-dispatch'
 Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-repeat'
 Bundle 'tpope/vim-surround'
-Bundle 'goldfeld/vim-seek'
-Bundle 'rking/ag.vim'
-Bundle 'othree/xml.vim'
-Bundle "pangloss/vim-javascript"
-Bundle "othree/html5.vim"
-Bundle "tpope/vim-unimpaired"
-Bundle "Valloric/YouCompleteMe"
-Bundle "marijnh/tern_for_vim"
-Bundle "moll/vim-node"
-Bundle "stephpy/vim-yaml"
-Bundle "tpope/vim-dispatch"
+Bundle 'tpope/vim-unimpaired'
 
 
 " vim-scripts repos
@@ -49,7 +48,7 @@ Bundle 'L9'
 
 " git repos on your local machine (ie. when working on your own plugin)
 
-" ...
+" :~)
 
 
 "// --- General --- //
@@ -75,8 +74,6 @@ set visualbell
 set noerrorbells
 
 set backspace=2
-" set clipboard=unnamedplus
-" set completeopt+=longest
 set encoding=utf-8
 set fileencodings=utf-8,cp950
 set history=1000
@@ -93,6 +90,8 @@ au BufNewFile,BufRead *.gradle setf groovy
 let g:ycm_add_preview_to_completeopt=0
 let g:ycm_confirm_extra_conf=0
 set completeopt-=preview
+" :~)
+
 
 "// --- Appearance --- //
 colorscheme seoul256
@@ -117,32 +116,27 @@ set statusline+=\ %P                            " percent through file
 
 hi User1 ctermfg=blue ctermbg=black
 hi User2 ctermfg=red  ctermbg=black
+" :~)
 
 
 "// ---  Keys Mapping --- //
 let mapleader = ","
 
-" hotkey to CtrlP
+" CtrlP hotkey
 nnoremap <Leader>p :CtrlP<CR>
 
-" hotkey to visual selection
+" Visual selection hotkey
 nmap <Leader><Leader> V
 
-:map<F8> a<C-R> <pre><code class="prettyprint"><CR><ESC>
-" nmap <leader>a :Ack<cr>
+" Ag search
 nmap <leader>a :Ag<cr>
 
-" switch window faster
-"nnoremap <C-h> <C-w>h
-"nnoremap <C-j> <C-w>j
-"nnoremap <C-k> <C-w>k
-"nnoremap <C-l> <C-w>l
-
+" Save file
 noremap <silent> <C-S>          :update<CR>
 vnoremap <silent> <C-S>         <C-C>:update<CR>
 inoremap <silent> <C-S>         <C-O>:update<CR>
 
-" let pointer stay after visual block yanking
+" Let pointer stay after visual block yanking
 :vmap y ygv<Esc>
 
 " Disable direction key
@@ -152,20 +146,20 @@ inoremap <silent> <C-S>         <C-O>:update<CR>
 :noremap   <left>   <nop>
 :noremap   <right>  <nop>
 
-" keep line in center
+" Keep line in center
 nmap <space> zz
 nmap n nzz
 nmap N Nzz
 
-" split window
+" Split window
 nnoremap <silent> vv <C-w>v
 nnoremap <silent> ss <C-w>s
 
-" insert blank line without into insert mode
+" Insert blank line without into insert mode
 map <S-Enter> O<Esc>
 map <CR> o<Esc>
 
-" copy/paste cross session
+" Copy/Paste cross session
 " How: 'Ctrl+V' select the rows you want to copy, 'Shift+Y' copy, jump to anthoer buffer, 'Shift+P' paste
 " *** ------------------------ ***
 " copy the current visual selection to ~/.vbuf
@@ -175,7 +169,7 @@ nmap <S-y> :.w! ~/.vbuf<CR>
 " paste the contents of the buffer file
 nmap <S-p> :r ~/.vbuf<CR>
 
-" mark redundant spaces
+" Mark redundant spaces
 " How: 'F3' mark redundant spaces, 'N' to search next
 " <leader>+w to remove all trailing space
 " *** --------------------- ***
@@ -200,7 +194,7 @@ func! DeleteTrailingWS()
 endfunc
 noremap <leader>w :call DeleteTrailingWS()<CR>
 
-" show function name
+" Show function name
 " How: '<leader>+,' shows function name
 " *** ------------------ ***
 fun! ShowFuncName()
@@ -212,38 +206,20 @@ fun! ShowFuncName()
   call search("\\%" . lnum . "l" . "\\%" . col . "c")
 endfun
 map f :call ShowFuncName() <CR>
+" :~)
 
-" quickfix window
-" How: '<leader>+q' shows quickfix window
-" *** --------------- ***
-" command -bang -nargs=? QFix call QFixToggle(<bang>0)
-" function! QFixToggle(forced)
-" 	if exists("g:qfix_win") && a:forced == 0
-" 	cclose
-" 	unlet g:qfix_win
-" 	else
-" 	copen 10
-" 	let g:qfix_win = bufnr("$")
-" 	endif
-" endfunction
-" nnoremap <leader>q :QFix<CR>
+"// === Plugins Start === //
 
+" --- incsearch.vim ---
+map /  <Plug>(incsearch-forward)
+map ?  <Plug>(incsearch-backward)
+map g/ <Plug>(incsearch-stay)
 
-" // === Plugins Start === //
-
-" // --- Omni-Completion --- //
-" If you prefer the Omni-Completion tip window to close when a selection is
-" made, these lines close it on movement in insert mode or when leaving insert mode
-" autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
-" autocmd InsertLeave * if pumvisible() == 0|pclose|endif
-
-
-"// --- Vim indent guide plugin --- //
+" --- Vim indent guide plugin ---
 let g:indent_guides_start_level = 2
 let g:indent_guides_guide_size = 1
 
-
-"// --- Ctags plugin --- //
+" --- Ctags plugin --- 
 set tags=tags;/
 " configure tags - add additional tags here
 set tags+=~/.vim/tags/cpp
@@ -254,32 +230,27 @@ function! UpdateTags()
 endfunction
 "nnoremap <C-L> :call UpdateTags()))
 
-
-"// --- Taglist plugin ---//
+" --- Taglist plugin ---
 let Tlist_Show_One_File = 1
 let Tlist_Use_Right_Window   = 1
 nnoremap <silent> <F6> :TlistToggle<CR>
 
-
-"// --- NERDTree plugin ---//
+" --- NERDTree plugin ---
 map <leader>r :NERDTreeFind<cr>
 nmap <silent> <C-N> :NERDTreeToggle<CR>
 let g:NERDTreeWinPos = "left"
 
-
-"// --- fugitive plugin --- //
+" --- fugitive plugin ---
 nnoremap <silent> <leader>gs :Gstatus<CR>
 nnoremap <silent> <leader>gd :Gdiff<CR>
 nnoremap <silent> <leader>gc :Gcommit<CR>
 nnoremap <silent> <leader>gl :Glog<CR>
 nnoremap <silent> <leader>gp :Git push<CR>
 
-
-"// --- Ack plugin ---//
+" --- Ack plugin ---
 let g:ackprg="ack-grep -H --nocolor --nogroup --column"
 
-
-"// --- MiniBufExplorer plugin --- //
+" --- MiniBufExplorer plugin ---
 function! <SID>CycleBuffer(forward)
 
 " The following hack handles the case where we only have one
@@ -318,8 +289,7 @@ endfor
 noremap <silent> <leader>n :call <SID>CycleBuffer(1)<CR>:<BS>
 noremap <silent> <leader>p :call <SID>CycleBuffer(0)<CR>:<BS>
 
-
-"// --- Ctrlp plugin --- //
+" --- Ctrlp plugin ---
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_working_path_mode = 'ra'
@@ -338,7 +308,7 @@ let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -co --exclude-stand
 let g:ctrlp_use_caching = 0
 
 
-" // --- Vimwiki plugin --- //
+" --- Vimwiki plugin ---
 let g:vimwiki_list = [{'path': '~/Dropbox/vimwiki/',
 			\'template_path': '~/Dropbox/vimwiki/template/',
 			\'template_default': 'default',
@@ -361,19 +331,10 @@ let g:vimwiki_valid_html_tags='b,i,s,u,sub,sup,kbd,del,br,hr,div,code,h1,pre'
 map <F4> :VimwikiAll2HTML<cr>
 "map <F4> :Vimwiki2HTML<cr>
 
-
-" // --- Markdown to HTML --- //
+" --- Markdown to HTML ---
 nmap <leader>q :%!/Users/brownylin/Dropbox/Markdown.pl --html4tags <cr>
 
-
-" // --- Supertab plugin --- //
-" let g:SuperTabMappingForward="<tab>"
-" let g:SuperTabLongestEnhanced = 1
-" let g:SuperTabLongestHighlight = 1
-" let g:SuperTabDefaultCompletionType = "context"
-
-
-"// --- CSCOPE plugin ---//
+" --- CSCOPE plugin ---
 " 讓子目錄也可以利用根目錄建構出的 cscope.out 檔案
 function s:FindFile(file)
     let curdir = getcwd()
@@ -450,4 +411,6 @@ if has("cscope")
     nmap <C-w><C-w>d :vert scs find d <C-R>=expand("<cword>")<CR><CR>
 
 endif
+
+" :~)
 
