@@ -83,6 +83,8 @@ set scrolloff=999 " keep cursor at center when page up/down
 set shiftwidth=4
 set tabstop=4
 "set expandtab
+set timeoutlen=500
+set ttimeoutlen=0
 
 autocmd Filetype gitcommit setlocal spell textwidth=72 " git commit format check
 au BufNewFile,BufRead *.gradle setf groovy
@@ -140,7 +142,7 @@ inoremap <silent> <C-S>         <C-O>:update<CR>
 :vmap y ygv<Esc>
 
 " Disable direction key
-:imap jk   <Esc>
+:imap jk   <C-C>
 :noremap   <up>     <nop>
 :noremap   <down>   <nop>
 :noremap   <left>   <nop>
