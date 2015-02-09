@@ -39,6 +39,8 @@ Bundle 'tpope/vim-repeat'
 Bundle 'tpope/vim-surround'
 Bundle 'tpope/vim-unimpaired'
 
+Plugin 'nsf/gocode', {'rtp': 'vim/'}
+Bundle 'fsouza/go.vim'
 
 " vim-scripts repos
 Bundle 'dbext.vim'
@@ -54,6 +56,7 @@ Bundle 'L9'
 "// --- General --- //
 syntax on
 filetype plugin indent on
+filetype plugin on
 
 set autoindent
 set autoread
@@ -91,7 +94,15 @@ au BufNewFile,BufRead *.gradle setf groovy
 
 let g:ycm_add_preview_to_completeopt=0
 let g:ycm_confirm_extra_conf=0
-set completeopt-=preview
+
+set completefunc=youcompleteme#Complete
+set completeopt=preview,menuone
+
+" If you prefer the Omni-Completion tip window to close when a selection is
+" made, these lines close it on movement in insert mode or when leaving
+" insert mode
+autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
+autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 " :~)
 
 
