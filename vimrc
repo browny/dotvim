@@ -38,6 +38,7 @@ Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-repeat'
 Bundle 'tpope/vim-surround'
 Bundle 'tpope/vim-unimpaired'
+Bundle 'majutsushi/tagbar'
 
 Plugin 'nsf/gocode', {'rtp': 'vim/'}
 Bundle 'fsouza/go.vim'
@@ -248,6 +249,9 @@ let Tlist_Show_One_File = 1
 let Tlist_Use_Right_Window   = 1
 nnoremap <silent> <F6> :TlistToggle<CR>
 
+" --- Tagbar plugin ---
+nmap <F8> :TagbarToggle<CR>
+
 " --- NERDTree plugin ---
 map <leader>r :NERDTreeFind<cr>
 nmap <silent> <C-N> :NERDTreeToggle<CR>
@@ -427,3 +431,31 @@ endif
 
 " :~)
 
+" --- Tagbar for Golang ---
+let g:tagbar_type_go = {
+    \ 'ctagstype' : 'go',
+    \ 'kinds'     : [
+        \ 'p:package',
+        \ 'i:imports:1',
+        \ 'c:constants',
+        \ 'v:variables',
+        \ 't:types',
+        \ 'n:interfaces',
+        \ 'w:fields',
+        \ 'e:embedded',
+        \ 'm:methods',
+        \ 'r:constructor',
+        \ 'f:functions'
+    \ ],
+    \ 'sro' : '.',
+    \ 'kind2scope' : {
+        \ 't' : 'ctype',
+        \ 'n' : 'ntype'
+    \ },
+    \ 'scope2kind' : {
+        \ 'ctype' : 't',
+        \ 'ntype' : 'n'
+    \ },
+    \ 'ctagsbin'  : 'gotags',
+    \ 'ctagsargs' : '-sort -silent'
+\ }
