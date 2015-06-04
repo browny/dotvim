@@ -24,10 +24,6 @@ Bundle 'junegunn/seoul256.vim'
 Bundle 'kien/ctrlp.vim'
 Bundle 'marijnh/tern_for_vim'
 Bundle 'mileszs/ack.vim'
-Bundle 'moll/vim-node'
-Bundle 'othree/html5.vim'
-Bundle 'othree/xml.vim'
-Bundle 'pangloss/vim-javascript'
 Bundle 'plasticboy/vim-markdown'
 Bundle 'rking/ag.vim'
 Bundle 'scrooloose/nerdtree'
@@ -39,9 +35,9 @@ Bundle 'tpope/vim-repeat'
 Bundle 'tpope/vim-surround'
 Bundle 'tpope/vim-unimpaired'
 Bundle 'majutsushi/tagbar'
+Bundle 'moll/vim-node'
 
-Plugin 'nsf/gocode', {'rtp': 'vim/'}
-Bundle 'fsouza/go.vim'
+Plugin 'fatih/vim-go'
 
 " vim-scripts repos
 Bundle 'dbext.vim'
@@ -91,7 +87,6 @@ set timeoutlen=500
 set ttimeoutlen=0
 
 autocmd Filetype gitcommit setlocal spell textwidth=72 " git commit format check
-au BufNewFile,BufRead *.gradle setf groovy
 
 let g:ycm_add_preview_to_completeopt=0
 let g:ycm_confirm_extra_conf=0
@@ -105,7 +100,6 @@ set completeopt=preview,menuone
 autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
 autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 " :~)
-
 
 "// --- Appearance --- //
 colorscheme seoul256
@@ -249,6 +243,14 @@ let Tlist_Show_One_File = 1
 let Tlist_Use_Right_Window   = 1
 nnoremap <silent> <F6> :TlistToggle<CR>
 
+" --- vim-go plugin ---
+au FileType go nmap <leader>r <Plug>(go-run)
+au FileType go nmap <leader>b <Plug>(go-build)
+au FileType go nmap <leader>t <Plug>(go-test)
+au FileType go nmap <leader>c <Plug>(go-coverage)
+au FileType go nmap <Leader>gb <Plug>(go-doc-browser)
+au FileType go nmap <Leader>i <Plug>(go-info)
+
 " --- Tagbar plugin ---
 nmap <F8> :TagbarToggle<CR>
 
@@ -310,10 +312,10 @@ noremap <silent> <leader>p :call <SID>CycleBuffer(0)<CR>:<BS>
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_working_path_mode = 'ra'
-set wildignore+=*/tmp/*,*/bin/*,*/target/*,*.so,*.swp,*.zip     " MacOSX/Linux
+set wildignore+=*/tmp/*,*/bin/*,*/target/*,*.so,*.swp,*.zip,*/Godeps/*     " MacOSX/Linux
 set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe  " Windows  "
 let g:ctrlp_custom_ignore = {
-	\ 'dir':  '\v[\/]\.(git|hg|svn)$',
+    \ 'dir':  '\.git$\|\.hg$\|\.svn$\|Godeps\|tmp$',
 	\ 'file': '\v\.(exe|so|dll|class)$',
 	\ 'link': 'SOME_BAD_SYMBOLIC_LINKS',
 	\ }
@@ -321,7 +323,7 @@ let g:ctrlp_custom_ignore = {
 let g:ctrlp_max_files = 1000000 " 加大 cache 索引的檔案數, 否則會漏找檔案
 
 " Make CtrlP faster
-let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -co --exclude-standard', 'find %s -type f']
+"let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -co --exclude-standard', 'find %s -type f']
 let g:ctrlp_use_caching = 0
 
 
@@ -428,10 +430,9 @@ if has("cscope")
     nmap <C-w><C-w>d :vert scs find d <C-R>=expand("<cword>")<CR><CR>
 
 endif
-
 " :~)
 
-" --- Tagbar for Golang ---
+" --- gotags for tagbar ---
 let g:tagbar_type_go = {
     \ 'ctagstype' : 'go',
     \ 'kinds'     : [
@@ -459,3 +460,4 @@ let g:tagbar_type_go = {
     \ 'ctagsbin'  : 'gotags',
     \ 'ctagsargs' : '-sort -silent'
 \ }
+" :~)
