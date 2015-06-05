@@ -2,7 +2,7 @@
 
 I use the dotvim repository to sync the `vim`, `bash`, [`tmux`](http://tmux.sourceforge.net/) and `git` settings. 
 
-The vim plugins are managed by [vundle](https://github.com/gmarik/vundle)
+The vim plugins are managed by [vim-plug](https://github.com/junegunn/vim-plug)
 
 ### Installation
 	
@@ -17,11 +17,11 @@ The vim plugins are managed by [vundle](https://github.com/gmarik/vundle)
 	ln -s ~/.vim/tmux.conf ~/.tmux.conf
 	cat bashrc_append >> ~/.bashrc
 
-### Mount submodules managed by vundle
+### Install plugins by vim-plug
 
-	git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
+	curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 	vim
-	:BundleInstall
+	:PlugInstall
 
 ### Screenshot
 

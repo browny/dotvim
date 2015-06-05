@@ -1,54 +1,36 @@
 
-" // --- Vundle --- //
 set nocompatible               " be iMproved
 filetype off                   " required!
 
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
+"// --- vim-plug --- //
+call plug#begin('~/.vim/plugged')
 
-" let Vundle manage Vundle
-" required!
-Bundle 'gmarik/vundle'
+Plug 'Townk/vim-autoclose'
+Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'elzr/vim-json'
+Plug 'fholgado/minibufexpl.vim'
+Plug 'godlygeek/tabular'
+Plug 'haya14busa/incsearch.vim'
+Plug 'junegunn/seoul256.vim'
+Plug 'kien/ctrlp.vim'
+Plug 'marijnh/tern_for_vim'
+Plug 'mileszs/ack.vim'
+Plug 'plasticboy/vim-markdown'
+Plug 'rking/ag.vim'
+Plug 'scrooloose/nerdtree'
+Plug 'stephpy/vim-yaml'
+Plug 'tomtom/tcomment_vim'
+Plug 'tpope/vim-dispatch'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-unimpaired'
+Plug 'majutsushi/tagbar'
+Plug 'moll/vim-node'
+Plug 'fatih/vim-go'
 
-" My Bundles here:
-"
-" original repos on github
-Bundle 'Townk/vim-autoclose'
-Bundle 'Valloric/YouCompleteMe'
-Bundle 'christoomey/vim-tmux-navigator'
-Bundle 'elzr/vim-json'
-Bundle 'fholgado/minibufexpl.vim'
-Bundle 'godlygeek/tabular'
-Bundle 'haya14busa/incsearch.vim'
-Bundle 'junegunn/seoul256.vim'
-Bundle 'kien/ctrlp.vim'
-Bundle 'marijnh/tern_for_vim'
-Bundle 'mileszs/ack.vim'
-Bundle 'plasticboy/vim-markdown'
-Bundle 'rking/ag.vim'
-Bundle 'scrooloose/nerdtree'
-Bundle 'stephpy/vim-yaml'
-Bundle 'tomtom/tcomment_vim'
-Bundle 'tpope/vim-dispatch'
-Bundle 'tpope/vim-fugitive'
-Bundle 'tpope/vim-repeat'
-Bundle 'tpope/vim-surround'
-Bundle 'tpope/vim-unimpaired'
-Bundle 'majutsushi/tagbar'
-Bundle 'moll/vim-node'
-
-Plugin 'fatih/vim-go'
-
-" vim-scripts repos
-Bundle 'dbext.vim'
-Bundle 'L9'
-" Bundle 'OmniCppComplete'
-" non github repos
-
-" git repos on your local machine (ie. when working on your own plugin)
-
-" :~)
-
+call plug#end()
 
 "// --- General --- //
 syntax on
