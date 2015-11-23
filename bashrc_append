@@ -5,56 +5,46 @@ fi
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
-# --- PATH --- #
-#export JAVA_HOME=$(/usr/libexec/java_home)
-export JAVA_HOME="`/usr/libexec/java_home -v '1.7*'`"
-export JRE_HOME="/Library/Java/JavaVirtualMachines/jdk1.7.0.jdk/Contents/Home/jre"
-export MYSQL_HOME="/usr/local/Cellar/mysql55/5.5.30"
-export M2_HOME="/Users/brownylin/Java/apache-maven-3.1.1"
-export MAVEN_OPTS="-Xmx1024m -XX:MaxPermSize=256m"
-export ANDROID_SDK="/Users/brownylin/Java/adt-bundle-mac-x86_64-20140321/sdk"
-
-export PATH=$PATH:/usr/bin:$JRE_HOME:$M2_HOME/bin:$MYSQL_HOME/bin:$ANDROID_SDK/platform-tools:$ANDROID_SDK/tools
-
 # --- general setting --- #
 export TERM="xterm-256color"
 export GREP_OPTIONS="--exclude=cscope.* --exclude=*~ --exclude=tags --exclude=*.~*"
-PS1="[\[\033[32m\]\w]\[\033[0m\]\[\033[1;36m\]\[\033[1;33m\]$ \[\033[0m\]"
-PROMPT_COMMAND='echo -ne "\033]0;${PWD}\007"'
-EDITOR=/usr/local/bin/vim
-alias c='clear'
+export EDITOR='vim'
 
 # --- bash alias --- #
+alias c='clear'
 alias grepsrc='grep -rn --exclude-dir={.git,.svn} --include=\*.{c,cpp,h,java}'
 alias tmux="tmux -2"
 alias ls="ls -GFlash"
 
-# get rid of command not found
-alias cd..='cd ..'
+alias gengotags='find . -name "*.go" -not -path "./Godeps/*" -not -path "tags" | xargs gotags > tags'
+alias gcs='gcloud compute ssh --ssh-flag=-A'
+alias gcz='gcloud config set compute/zone'
+alias gcc='gcloud compute copy-files'
+alias mtr='/usr/local/sbin/mtr'
+alias git-prune-merged="git branch --merged master | grep -v 'master$' | xargs git branch -d"
 
-# a quick way to get out of current directory
-alias ..='cd ..'
-alias ...='cd ../../'
-alias ....='cd ../../../'
+# useful Docker functions
+dock-run()  { docker run -i -t --privileged $@ ;}
+dock-exec() { docker exec -i -t $@ /bin/bash ;}
+dock-log()  { docker logs --tail=all -f $@ ;}
+dock-port() { docker port $@ ;}
+dock-vol()  { docker inspect --format '{{ .Volumes }}' $@ ;}
+dock-ip()   { docker inspect --format '{{ .NetworkSettings.IPAddress }}' $@ ;}
+dock-rmc()  { docker rm `docker ps -qa --filter 'status=exited'` ;}
+dock-rmi()  { docker rmi -f `docker images | grep '^<none>' | awk '{print $3}'` ;}
 
-# Ack
-alias Ack='ack-grep'
+dock-do() {
+   if [ "$#" -ne 1 ]; then
+      echo "Usage: $0 start|stop|pause|unpause|<any valid docker cmd>"
+   fi
+
+   for c in $(docker ps -a | awk '{print $1}' | sed "1 d")
+   do
+       docker $1 $c
+   done
+}
 
 # --- vim alias --- #
 alias gencscope='find . -name '*.cpp' -o -name '*.h' -o -name '*.c' -o -name '*.java' > temp; grep -v "Test" temp > cscope.files; cscope -Rbkq -i cscope.files;'
 alias gentags='ctags -R --c++-kinds=+px --fields=+iaS --extra=+q .'
 
-# http://jeroenjanssens.com/2013/08/16/quickly-navigate-your-filesystem-from-the-command-line.html
-export MARKPATH=$HOME/.marks
-function jump { 
-    cd -P "$MARKPATH/$1" 2>/dev/null || echo "No such mark: $1"
-}
-function mark { 
-    mkdir -p "$MARKPATH"; ln -s "$(pwd)" "$MARKPATH/$1"
-}
-function unmark { 
-    rm -i "$MARKPATH/$1"
-}
-function marks {
-    \ls -l "$MARKPATH" | tail -n +2 | sed 's/  / /g' | cut -d' ' -f9- | awk -F ' -> ' '{printf "%-10s -> %s\n", $1, $2}'
-}
