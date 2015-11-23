@@ -29,6 +29,10 @@ Plug 'tpope/vim-unimpaired'
 Plug 'majutsushi/tagbar'
 Plug 'moll/vim-node'
 Plug 'fatih/vim-go'
+Plug 'christoomey/vim-system-copy'
+Plug 'tfnico/vim-gradle'
+Plug 'derekwyatt/vim-scala'
+Plug 'airblade/vim-gitgutter'
 
 call plug#end()
 
@@ -87,7 +91,7 @@ autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 colorscheme seoul256
 let g:seoul256_background = 233
 let python_highlight_all=1
-set cursorline			"cursor highlight
+"set cursorline			"cursor highlight
 set t_Co=256
 
 
@@ -197,6 +201,7 @@ fun! ShowFuncName()
 endfun
 map f :call ShowFuncName() <CR>
 " :~)
+
 
 "// === Plugins Start === //
 

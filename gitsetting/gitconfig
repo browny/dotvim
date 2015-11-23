@@ -20,6 +20,9 @@
 	fp = format-patch
 	chep = cherry-pick
 	rh = reset --hard
+	ls = log --decorate --oneline
+	ll = log --decorate --numstat
+	caa = commit -a --amend -C HEAD
 	merge = merge -s recursive -X patience
 	compare = log --left-right --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --no-merges --date=relative
 	contains = branch -a --contains
