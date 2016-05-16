@@ -33,6 +33,7 @@ Plug 'christoomey/vim-system-copy'
 Plug 'tfnico/vim-gradle'
 Plug 'derekwyatt/vim-scala'
 Plug 'airblade/vim-gitgutter'
+Plug 'fatih/molokai'
 
 call plug#end()
 
@@ -89,6 +90,7 @@ autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 
 "// --- Appearance --- //
 colorscheme seoul256
+
 let g:seoul256_background = 233
 let python_highlight_all=1
 "set cursorline			"cursor highlight
@@ -231,12 +233,11 @@ let Tlist_Use_Right_Window   = 1
 nnoremap <silent> <F6> :TlistToggle<CR>
 
 " --- vim-go plugin ---
-au FileType go nmap <leader>r <Plug>(go-run)
-au FileType go nmap <leader>b <Plug>(go-build)
-au FileType go nmap <leader>t <Plug>(go-test)
-au FileType go nmap <leader>c <Plug>(go-coverage)
-au FileType go nmap <Leader>gb <Plug>(go-doc-browser)
-au FileType go nmap <Leader>i <Plug>(go-info)
+" let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+" let g:go_highlight_structs = 1
+" let g:go_highlight_interfaces = 1
+" let g:go_fmt_command = "goimports"
 
 " --- Tagbar plugin ---
 nmap <F8> :TagbarToggle<CR>
@@ -299,10 +300,10 @@ noremap <silent> <leader>p :call <SID>CycleBuffer(0)<CR>:<BS>
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_working_path_mode = 'ra'
-set wildignore+=*/tmp/*,*/bin/*,*/target/*,*.so,*.swp,*.zip,*/Godeps/*     " MacOSX/Linux
+set wildignore+=*/tmp/*,*/bin/*,*/target/*,*.so,*.swp,*.zip,*/Godeps/*,*/vendor/*     " MacOSX/Linux
 set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe  " Windows  "
 let g:ctrlp_custom_ignore = {
-    \ 'dir':  '\.git$\|\.hg$\|\.svn$\|Godeps\|tmp$',
+    \ 'dir':  '\.git$\|\.hg$\|\.svn$\|Godeps\|vendor\|tmp$',
 	\ 'file': '\v\.(exe|so|dll|class)$',
 	\ 'link': 'SOME_BAD_SYMBOLIC_LINKS',
 	\ }
@@ -448,3 +449,6 @@ let g:tagbar_type_go = {
     \ 'ctagsargs' : '-sort -silent'
 \ }
 " :~)
+
+" --- golint ---
+set rtp+=/Users/brownylin/Dropbox/livehouse/Go/ext/src/github.com/golang/lint/misc/vim
