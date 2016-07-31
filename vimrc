@@ -14,7 +14,6 @@ Plug 'godlygeek/tabular'
 Plug 'haya14busa/incsearch.vim'
 Plug 'junegunn/seoul256.vim'
 Plug 'kien/ctrlp.vim'
-Plug 'marijnh/tern_for_vim'
 Plug 'mileszs/ack.vim'
 Plug 'plasticboy/vim-markdown'
 Plug 'rking/ag.vim'
@@ -34,6 +33,10 @@ Plug 'tfnico/vim-gradle'
 Plug 'derekwyatt/vim-scala'
 Plug 'airblade/vim-gitgutter'
 Plug 'fatih/molokai'
+Plug 'pangloss/vim-javascript'
+Plug 'ternjs/tern_for_vim'
+Plug 'othree/javascript-libraries-syntax.vim'
+Plug 'nsf/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
 
 call plug#end()
 
@@ -79,7 +82,7 @@ let g:ycm_add_preview_to_completeopt=0
 let g:ycm_confirm_extra_conf=0
 
 set completefunc=youcompleteme#Complete
-set completeopt=preview,menuone
+set completeopt=preview,longest,menuone
 
 " If you prefer the Omni-Completion tip window to close when a selection is
 " made, these lines close it on movement in insert mode or when leaving
@@ -90,6 +93,7 @@ autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 
 "// --- Appearance --- //
 colorscheme seoul256
+" colorscheme molokai
 
 let g:seoul256_background = 233
 let python_highlight_all=1
@@ -117,9 +121,6 @@ hi User2 ctermfg=red  ctermbg=black
 
 "// ---  Keys Mapping --- //
 let mapleader = ","
-
-" CtrlP hotkey
-nnoremap <Leader>p :CtrlP<CR>
 
 " Visual selection hotkey
 nmap <Leader><Leader> V
@@ -207,6 +208,10 @@ map f :call ShowFuncName() <CR>
 
 "// === Plugins Start === //
 
+" --- tern_for_vim ---
+let g:tern_show_argument_hints='on_hold'
+let g:tern_map_keys = 1
+
 " --- incsearch.vim ---
 map /  <Plug>(incsearch-forward)
 map ?  <Plug>(incsearch-backward)
@@ -233,11 +238,19 @@ let Tlist_Use_Right_Window   = 1
 nnoremap <silent> <F6> :TlistToggle<CR>
 
 " --- vim-go plugin ---
-" let g:go_highlight_functions = 1
+let g:go_highlight_interfaces = 1
+let g:go_highlight_structs = 1
+let g:go_highlight_functions = 1
+" let g:go_highlight_operators = 1
+" let g:go_highlight_build_constraints = 1
 let g:go_highlight_methods = 1
-" let g:go_highlight_structs = 1
-" let g:go_highlight_interfaces = 1
-" let g:go_fmt_command = "goimports"
+let g:go_def_mapping_enabled = 0 " //for speed, use tags
+let g:go_fmt_command = "goimports"
+au FileType go nmap <Leader>i <Plug>(go-info)
+au FileType go nmap <Leader>e <Plug>(go-rename)
+au FileType go nmap <Leader>l <Plug>(go-metalinter)
+au FileType go nmap <Leader>gd <Plug>(go-def)
+au FileType go nmap <Leader>c <Plug>(go-coverage-toggle)
 
 " --- Tagbar plugin ---
 nmap <F8> :TagbarToggle<CR>
@@ -246,6 +259,7 @@ nmap <F8> :TagbarToggle<CR>
 map <leader>r :NERDTreeFind<cr>
 nmap <silent> <C-N> :NERDTreeToggle<CR>
 let g:NERDTreeWinPos = "left"
+let NERDTreeIgnore = ['cscope\.*', '\.*temp\.*']
 
 " --- fugitive plugin ---
 nnoremap <silent> <leader>gs :Gstatus<CR>
@@ -304,7 +318,7 @@ set wildignore+=*/tmp/*,*/bin/*,*/target/*,*.so,*.swp,*.zip,*/Godeps/*,*/vendor/
 set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe  " Windows  "
 let g:ctrlp_custom_ignore = {
     \ 'dir':  '\.git$\|\.hg$\|\.svn$\|Godeps\|vendor\|tmp$',
-	\ 'file': '\v\.(exe|so|dll|class)$',
+	\ 'file': '\v\.(exe|so|dll|class|a)$',
 	\ 'link': 'SOME_BAD_SYMBOLIC_LINKS',
 	\ }
 

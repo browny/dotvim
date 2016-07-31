@@ -41,6 +41,7 @@
 	who = shortlog -n -s --no-merges
 	g = grep -n --color -E
 	com = "!sh -c \"bug=`git symbolic-ref HEAD|sed s#refs/heads/##`; git commit -em \\\"BUG: \\${bug}\\\"\""
+	d = difftool
 
 [push]
 # Only push branches that have been
@@ -74,3 +75,18 @@
 	user = browny
 [ghi]
 	token = !security find-internet-password -a  -s github.com -l 'ghi token' -w
+[pager]
+	diff = diff-so-fancy | less --tabs=1,5 -RFX
+	show = diff-so-fancy | less --tabs=1,5 -RFX
+[diff]
+	tool = vimdiff
+[difftool]
+	prompt = false
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+[mergetool "sourcetree"]
+	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
+[commit]
+	template = /Users/brownylin/.stCommitMsg
