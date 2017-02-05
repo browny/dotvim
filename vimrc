@@ -6,37 +6,37 @@ filetype off                   " required!
 call plug#begin('~/.vim/plugged')
 
 Plug 'Townk/vim-autoclose'
-Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
+Plug 'Valloric/YouCompleteMe', { 'do': 'sudo ./install.py --gocode-completer' }
+Plug 'airblade/vim-gitgutter'
+Plug 'christoomey/vim-system-copy'
 Plug 'christoomey/vim-tmux-navigator'
+Plug 'derekwyatt/vim-scala'
 Plug 'elzr/vim-json'
+Plug 'fatih/molokai'
+Plug 'fatih/vim-go'
 Plug 'fholgado/minibufexpl.vim'
 Plug 'godlygeek/tabular'
 Plug 'haya14busa/incsearch.vim'
 Plug 'junegunn/seoul256.vim'
 Plug 'kien/ctrlp.vim'
+Plug 'majutsushi/tagbar'
 Plug 'mileszs/ack.vim'
+Plug 'moll/vim-node'
+Plug 'othree/javascript-libraries-syntax.vim'
+Plug 'pangloss/vim-javascript'
 Plug 'plasticboy/vim-markdown'
 Plug 'rking/ag.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'stephpy/vim-yaml'
+Plug 'ternjs/tern_for_vim'
+Plug 'tfnico/vim-gradle'
 Plug 'tomtom/tcomment_vim'
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
-Plug 'majutsushi/tagbar'
-Plug 'moll/vim-node'
-Plug 'fatih/vim-go'
-Plug 'christoomey/vim-system-copy'
-Plug 'tfnico/vim-gradle'
-Plug 'derekwyatt/vim-scala'
-Plug 'airblade/vim-gitgutter'
-Plug 'fatih/molokai'
-Plug 'pangloss/vim-javascript'
-Plug 'ternjs/tern_for_vim'
-Plug 'othree/javascript-libraries-syntax.vim'
-Plug 'nsf/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
+Plug 'ConradIrwin/vim-bracketed-paste'
 
 call plug#end()
 
@@ -75,6 +75,7 @@ set tabstop=4
 "set expandtab
 set timeoutlen=500
 set ttimeoutlen=0
+set clipboard=unnamed
 
 autocmd Filetype gitcommit setlocal spell textwidth=72 " git commit format check
 
@@ -113,6 +114,7 @@ set statusline+=%=                              " left/right separator
 set statusline+=%c,                             " cursor column
 set statusline+=%l/%L                           " cursor line/total lines
 set statusline+=\ %P                            " percent through file
+set statusline+=\ %o                            " bytes offset
 
 hi User1 ctermfg=blue ctermbg=black
 hi User2 ctermfg=red  ctermbg=black
@@ -205,6 +207,9 @@ endfun
 map f :call ShowFuncName() <CR>
 " :~)
 
+" Toggle wrap line
+highlight OverLength ctermbg=red ctermfg=white guibg=#592929
+match OverLength /\%101v.\+/
 
 "// === Plugins Start === //
 
@@ -241,16 +246,22 @@ nnoremap <silent> <F6> :TlistToggle<CR>
 let g:go_highlight_interfaces = 1
 let g:go_highlight_structs = 1
 let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
 " let g:go_highlight_operators = 1
 " let g:go_highlight_build_constraints = 1
-let g:go_highlight_methods = 1
+let g:go_auto_sameids = 1
 let g:go_def_mapping_enabled = 0 " //for speed, use tags
 let g:go_fmt_command = "goimports"
-au FileType go nmap <Leader>i <Plug>(go-info)
+let g:go_guru_scope = ["straas.io/..."]
+au FileType go nmap <leader>b <Plug>(go-install)
+au FileType go nmap <C-I> <Plug>(go-info)
 au FileType go nmap <Leader>e <Plug>(go-rename)
 au FileType go nmap <Leader>l <Plug>(go-metalinter)
-au FileType go nmap <Leader>gd <Plug>(go-def)
+au FileType go nmap <C-]> <Plug>(go-def)
+au FileType go nmap <C-t> <Plug>(go-def-pop)
 au FileType go nmap <Leader>c <Plug>(go-coverage-toggle)
+au FileType go nmap <Leader>ip <Plug>(go-implements)
+au FileType go nmap <leader>t <Plug>(go-alternate-edit)
 
 " --- Tagbar plugin ---
 nmap <F8> :TagbarToggle<CR>

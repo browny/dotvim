@@ -1,5 +1,5 @@
 [user]
-	name = Browny Lin
+	name = Browny
 	email = browny.lin@ikala.tv
 
 [core]
@@ -37,6 +37,7 @@
 	lg = log --color --graph --pretty=format:'%Cred%h%Creset %C(bold blue)<%an>%Creset %C(yellow)%d%Creset %s %Cgreen(%cr)' --abbrev-commit
 	report = log --author=Browny --since='2 sunday ago' --until='1 sunday ago' --format='%Cgreen%ci%Creset %s%Creset' --no-merges
 	sortbytime = for-each-ref --sort=-committerdate --format='%(committerdate:short) %(authorname) %(refname:short)'
+	commend = commit --amend --no-edit
 
 	who = shortlog -n -s --no-merges
 	g = grep -n --color -E
@@ -65,28 +66,9 @@
 	local = yellow
 	remote = green
 
-[giggle]
-	main-window-maximized = true
-	main-window-geometry = 492x168+2279+382
-	history-view-vpane-position = 457
-	file-view-vpane-position = 1012
-	main-window-view = HistoryView
 [github]
 	user = browny
-[ghi]
-	token = !security find-internet-password -a  -s github.com -l 'ghi token' -w
+
 [pager]
 	diff = diff-so-fancy | less --tabs=1,5 -RFX
 	show = diff-so-fancy | less --tabs=1,5 -RFX
-[diff]
-	tool = vimdiff
-[difftool]
-	prompt = false
-[difftool "sourcetree"]
-	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
-	path = 
-[mergetool "sourcetree"]
-	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
-	trustExitCode = true
-[commit]
-	template = /Users/brownylin/.stCommitMsg
