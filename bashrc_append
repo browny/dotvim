@@ -1,29 +1,113 @@
-if [ -f $(brew --prefix)/etc/bash_completion ]; then
-	. $(brew --prefix)/etc/bash_completion
-fi 
+# --- PATH --- #
+export GOPATH=$HOME/go:$HOME/Dropbox/livehouse/Go/wego
+export PATH=$PATH:/usr/bin:/usr/local/sbin:/usr/local/bin:/usr/local/go/bin:$HOME/go/bin:$HOME/Dropbox/livehouse/Go/wego/bin
 
-export LC_ALL=en_US.UTF-8
-export LANG=en_US.UTF-8
 
 # --- general setting --- #
 export TERM="xterm-256color"
 export GREP_OPTIONS="--exclude=cscope.* --exclude=*~ --exclude=tags --exclude=*.~*"
 export EDITOR='vim'
 
+# history will only keep the newest versions of commands
+export HISTCONTROL=ignoreboth:erasedups
+
+# allow the use of Ctrl-s in reverse search of bash
+[[ $- == *i* ]] && stty -ixon
+
+
+# --- source --- #
+# The next line updates PATH for the Google Cloud SDK.
+source '/Users/brownylin/google-cloud-sdk/path.bash.inc'
+
+# The next line enables bash completion for gcloud.
+source '/Users/brownylin/google-cloud-sdk/completion.bash.inc'
+
+# autojump
+[[ -s $(brew --prefix)/etc/profile.d/autojump.sh ]] && . $(brew --prefix)/etc/profile.d/autojump.sh
+
+# git-completion
+source ~/git-completion.bash
+
+# tumxinator
+source ~/tmuxinator.bash
+
+# only load Liquid Prompt in interactive shells, not from a script or from scp
+[[ $- = *i* ]] && source ~/liquidprompt/liquidprompt
+
+if [ -f $(brew --prefix)/etc/grc.bashrc ]; then
+	. $(brew --prefix)/etc/grc.bashrc
+fi 
+
+if [ -f "/usr/local/etc/bash_completion" ]; then
+    . "/usr/local/etc/bash_completion"
+fi
+
+
 # --- bash alias --- #
 alias c='clear'
-alias grepsrc='grep -rn --exclude-dir={.git,.svn} --include=\*.{c,cpp,h,java}'
 alias tmux="tmux -2"
-alias ls="ls -GFlash"
+alias lls="ls -GFlash"
 
-alias gengotags='find . -name "*.go" -not -path "./Godeps/*" -not -path "tags" | xargs gotags > tags'
+# get rid of command not found
+alias cd..='cd ..'
+
+# a quick way to get out of current directory
+alias ..='cd ..'
+alias ...='cd ../../'
+alias ....='cd ../../../'
+alias .4='cd ../../../../'
+alias .5='cd ../../../../../'
+alias .6='cd ../../../../../../'
+
+# ack
+alias Ack='ack-grep'
+alias ag='ag --path-to-agignore ~/.agignore'
+
+# cscope/ctags
+alias gencscope='find . -name '*.cpp' -o -name '*.h' -o -name '*.c' -o -name '*.java' > temp; grep -v "Test" temp > cscope.files; cscope -Rbkq -i cscope.files;'
+alias gengoscope='find . -name "*.go" -not -path "./vendor/*" -not -path "tags" > temp; grep -v "Test" temp > cscope.files; cscope -Rbkq -i cscope.files;'
+alias gentags='ctags -R --c++-kinds=+px --fields=+iaS --extra=+q .'
+alias genjtags='find . -type f -iregex ".*\.js$" -exec jsctags {} -f \; | sed '/^$/d' | sort > tags'
+
+# gcloud
 alias gcs='gcloud compute ssh --ssh-flag=-A'
+alias gca='gcloud config configurations activate'
 alias gcz='gcloud config set compute/zone'
-alias gcc='gcloud compute copy-files'
+alias gccp='gcloud compute copy-files'
+alias gcsi='gcloud compute instances list'
+
+# wego
+k8senv() {
+  gca $1
+  /bin/bash /Users/brownylin/Dropbox/livehouse/Go/wego/script/common/k8s-env.sh $1
+}
+ksh() {
+  var=(`kubectl get pod | grep $1 | awk '{print $1}'`)
+  kubectl exec -it ${var[0]} -- env "TERM=${TERM:-xterm}" bash
+}
+tailmiddle() {
+  var=(`kubectl get pod | grep middle-rest | awk '{print $1}'`)
+  multitail -ci blue -l "kubectl logs -f ${var[0]} | grep '{'" -ci yellow -L "kubectl logs -f ${var[1]} | grep '{'"
+}
+tailbridger() {
+  var=(`kubectl get pod | grep bridger-rest | awk '{print $1}'`)
+  multitail -ci blue -l "kubectl logs -f ${var[0]} | grep '{'"
+}
+synctag() {
+  git tag -l | xargs git tag -d
+  git fetch -p --tags
+}
+alias k8senv=k8senv
+alias ksh=ksh
+alias tailm=tailmiddle
+alias tailb=tailbridger
+alias synctag=synctag
 alias mtr='/usr/local/sbin/mtr'
-alias git-prune-merged="git branch --merged master | grep -v 'master$' | xargs git branch -d"
+alias glint="gometalinter --deadline=30s --exclude=libexec --exclude=vendor"
+alias gogo='go vet $(go list straas.io/...); go list straas.io/... | grep -v "mocks" | xargs -n 1 golint; gt -f -short $(go list straas.io/...)'
 
 # useful Docker functions
+docker-on() { bash --login '/Applications/Docker/Docker Quickstart Terminal.app/Contents/Resources/Scripts/start.sh' ;}
 dock-run()  { docker run -i -t --privileged $@ ;}
 dock-exec() { docker exec -i -t $@ /bin/bash ;}
 dock-log()  { docker logs --tail=all -f $@ ;}
@@ -32,7 +116,6 @@ dock-vol()  { docker inspect --format '{{ .Volumes }}' $@ ;}
 dock-ip()   { docker inspect --format '{{ .NetworkSettings.IPAddress }}' $@ ;}
 dock-rmc()  { docker rm `docker ps -qa --filter 'status=exited'` ;}
 dock-rmi()  { docker rmi -f `docker images | grep '^<none>' | awk '{print $3}'` ;}
-
 dock-do() {
    if [ "$#" -ne 1 ]; then
       echo "Usage: $0 start|stop|pause|unpause|<any valid docker cmd>"
@@ -43,8 +126,3 @@ dock-do() {
        docker $1 $c
    done
 }
-
-# --- vim alias --- #
-alias gencscope='find . -name '*.cpp' -o -name '*.h' -o -name '*.c' -o -name '*.java' > temp; grep -v "Test" temp > cscope.files; cscope -Rbkq -i cscope.files;'
-alias gentags='ctags -R --c++-kinds=+px --fields=+iaS --extra=+q .'
-
