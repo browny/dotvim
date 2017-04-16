@@ -36,7 +36,6 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
-Plug 'ConradIrwin/vim-bracketed-paste'
 
 call plug#end()
 
@@ -78,12 +77,6 @@ set ttimeoutlen=0
 set clipboard=unnamed
 
 autocmd Filetype gitcommit setlocal spell textwidth=72 " git commit format check
-
-let g:ycm_add_preview_to_completeopt=0
-let g:ycm_confirm_extra_conf=0
-
-set completefunc=youcompleteme#Complete
-set completeopt=preview,longest,menuone
 
 " If you prefer the Omni-Completion tip window to close when a selection is
 " made, these lines close it on movement in insert mode or when leaving
@@ -128,6 +121,8 @@ let mapleader = ","
 nmap <Leader><Leader> V
 
 " Ag search
+let g:ag_prg="ag --word-regexp --vimgrep --smart-case"
+let g:ag_highlight=1
 nmap <leader>a :Ag<cr>
 
 " Save file
@@ -157,6 +152,29 @@ nnoremap <silent> ss <C-w>s
 " Insert blank line without into insert mode
 map <S-Enter> O<Esc>
 map <CR> o<Esc>
+
+" Paste without explicitly turning paste mode on/off
+function! WrapForTmux(s)
+  if !exists('$TMUX')
+    return a:s
+  endif
+
+  let tmux_start = "\<Esc>Ptmux;"
+  let tmux_end = "\<Esc>\\"
+
+  return tmux_start . substitute(a:s, "\<Esc>", "\<Esc>\<Esc>", 'g') . tmux_end
+endfunction
+
+let &t_SI .= WrapForTmux("\<Esc>[?2004h")
+let &t_EI .= WrapForTmux("\<Esc>[?2004l")
+
+function! XTermPasteBegin()
+  set pastetoggle=<Esc>[201~
+  set paste
+  return ""
+endfunction
+
+inoremap <special> <expr> <Esc>[200~ XTermPasteBegin()
 
 " Copy/Paste cross session
 " How: 'Ctrl+V' select the rows you want to copy, 'Shift+Y' copy, jump to anthoer buffer, 'Shift+P' paste
@@ -208,10 +226,20 @@ map f :call ShowFuncName() <CR>
 " :~)
 
 " Toggle wrap line
-highlight OverLength ctermbg=red ctermfg=white guibg=#592929
-match OverLength /\%101v.\+/
+" highlight OverLength ctermbg=red ctermfg=white guibg=#592929
+" match OverLength /\%101v.\+/
 
 "// === Plugins Start === //
+
+" --- YouCompleteMe ---
+let g:ycm_min_num_of_chars_for_completion = 3
+let g:ycm_autoclose_preview_window_after_completion=1
+let g:ycm_complete_in_comments = 1
+let g:ycm_key_list_select_completion = ['<c-n>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<c-p>', '<Up>']
+
+set completefunc=youcompleteme#Complete
+set completeopt=preview,longest,menuone
 
 " --- tern_for_vim ---
 let g:tern_show_argument_hints='on_hold'
@@ -226,7 +254,7 @@ map g/ <Plug>(incsearch-stay)
 let g:indent_guides_start_level = 2
 let g:indent_guides_guide_size = 1
 
-" --- Ctags plugin --- 
+" --- Ctags plugin ---
 set tags=tags;/
 " configure tags - add additional tags here
 set tags+=~/.vim/tags/cpp

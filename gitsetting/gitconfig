@@ -38,6 +38,7 @@
 	report = log --author=Browny --since='2 sunday ago' --until='1 sunday ago' --format='%Cgreen%ci%Creset %s%Creset' --no-merges
 	sortbytime = for-each-ref --sort=-committerdate --format='%(committerdate:short) %(authorname) %(refname:short)'
 	commend = commit --amend --no-edit
+	tagcommit = rev-list -n 1
 
 	who = shortlog -n -s --no-merges
 	g = grep -n --color -E
