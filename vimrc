@@ -86,8 +86,13 @@ autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 " :~)
 
 "// --- Appearance --- //
-colorscheme seoul256
-" colorscheme molokai
+set t_Co=256
+set background=dark
+colorscheme Tomorrow-Night
+" colorscheme github
+highlight Normal ctermbg=NONE
+highlight nonText ctermbg=NONE
+
 
 let g:seoul256_background = 233
 let python_highlight_all=1
@@ -115,7 +120,7 @@ hi User2 ctermfg=red  ctermbg=black
 
 
 "// ---  Keys Mapping --- //
-let mapleader = ","
+let mapleader = " "
 
 " Visual selection hotkey
 nmap <Leader><Leader> V
