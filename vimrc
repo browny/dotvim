@@ -36,6 +36,9 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
+Plug 'NLKNguyen/papercolor-theme'
+Plug 'wakatime/vim-wakatime'
+Plug 'easymotion/vim-easymotion'
 
 call plug#end()
 
@@ -72,8 +75,9 @@ set scrolloff=999 " keep cursor at center when page up/down
 set shiftwidth=4
 set tabstop=4
 "set expandtab
-set timeoutlen=500
+set ttimeout
 set ttimeoutlen=0
+set matchtime=0
 set clipboard=unnamed
 
 autocmd Filetype gitcommit setlocal spell textwidth=72 " git commit format check
@@ -259,6 +263,17 @@ map g/ <Plug>(incsearch-stay)
 let g:indent_guides_start_level = 2
 let g:indent_guides_guide_size = 1
 
+" --- EasyMotion ---
+let g:EasyMotion_do_mapping = 0 " Disable default mappings
+nmap s <Plug>(easymotion-overwin-f2)
+
+" Turn on case insensitive feature
+let g:EasyMotion_smartcase = 1
+
+" JK motions: Line motions
+map <Leader>j <Plug>(easymotion-j)
+map <Leader>k <Plug>(easymotion-k)
+
 " --- Ctags plugin ---
 set tags=tags;/
 " configure tags - add additional tags here
@@ -276,13 +291,15 @@ let Tlist_Use_Right_Window   = 1
 nnoremap <silent> <F6> :TlistToggle<CR>
 
 " --- vim-go plugin ---
+let g:go_highlight_types = 1
+let g:go_highlight_extra_types = 1
 let g:go_highlight_interfaces = 1
 let g:go_highlight_structs = 1
 let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
 " let g:go_highlight_operators = 1
 " let g:go_highlight_build_constraints = 1
-let g:go_auto_sameids = 1
+" let g:go_auto_sameids = 1
 let g:go_def_mapping_enabled = 0 " //for speed, use tags
 let g:go_fmt_command = "goimports"
 let g:go_guru_scope = ["straas.io/..."]
@@ -303,7 +320,7 @@ nmap <F8> :TagbarToggle<CR>
 map <leader>r :NERDTreeFind<cr>
 nmap <silent> <C-N> :NERDTreeToggle<CR>
 let g:NERDTreeWinPos = "left"
-let NERDTreeIgnore = ['cscope\.*', '\.*temp\.*']
+let NERDTreeIgnore = ['cscope\.*']
 
 " --- fugitive plugin ---
 nnoremap <silent> <leader>gs :Gstatus<CR>
@@ -358,7 +375,7 @@ noremap <silent> <leader>p :call <SID>CycleBuffer(0)<CR>:<BS>
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_working_path_mode = 'ra'
-set wildignore+=*/tmp/*,*/bin/*,*/target/*,*.so,*.swp,*.zip,*/Godeps/*,*/vendor/*     " MacOSX/Linux
+set wildignore+=*/tmp/*,*/bin/*,*/target/*,*.so,*.swp,*.zip,*/Godeps/*,*/vendor/*,*/node_modules/*     " MacOSX/Linux
 set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe  " Windows  "
 let g:ctrlp_custom_ignore = {
     \ 'dir':  '\.git$\|\.hg$\|\.svn$\|Godeps\|vendor\|tmp$',
