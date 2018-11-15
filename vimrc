@@ -37,7 +37,7 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
 Plug 'NLKNguyen/papercolor-theme'
-Plug 'wakatime/vim-wakatime'
+Plug 'jremmen/vim-ripgrep'
 Plug 'easymotion/vim-easymotion'
 
 call plug#end()
@@ -129,10 +129,15 @@ let mapleader = " "
 " Visual selection hotkey
 nmap <Leader><Leader> V
 
-" Ag search
-let g:ag_prg="ag --word-regexp --vimgrep --smart-case"
-let g:ag_highlight=1
-nmap <leader>a :Ag<cr>
+" Rg search
+let g:rg_highlight=1
+let g:rg_command="rg --vimgrep --word-regexp"
+nmap <leader>a :Rg<cr>
+
+" " Ag search
+" let g:ag_prg="ag --word-regexp --vimgrep --smart-case"
+" let g:ag_highlight=1
+" nmap <leader>a :Ag<cr>
 
 " Save file
 noremap <silent> <C-S>          :update<CR>
@@ -159,8 +164,14 @@ nnoremap <silent> vv <C-w>v
 nnoremap <silent> ss <C-w>s
 
 " Insert blank line without into insert mode
-map <S-Enter> O<Esc>
-map <CR> o<Esc>
+" map <S-Enter> O<Esc>
+" map <CR> o<Esc>
+
+" Automatically close the quickfix window when leaving a file
+aug QFClose
+  au!
+  au WinEnter * if winnr('$') == 1 && getbufvar(winbufnr(winnr()), "&buftype") == "quickfix"|q|endif
+aug END
 
 " Paste without explicitly turning paste mode on/off
 function! WrapForTmux(s)
@@ -263,17 +274,6 @@ map g/ <Plug>(incsearch-stay)
 let g:indent_guides_start_level = 2
 let g:indent_guides_guide_size = 1
 
-" --- EasyMotion ---
-let g:EasyMotion_do_mapping = 0 " Disable default mappings
-nmap s <Plug>(easymotion-overwin-f2)
-
-" Turn on case insensitive feature
-let g:EasyMotion_smartcase = 1
-
-" JK motions: Line motions
-map <Leader>j <Plug>(easymotion-j)
-map <Leader>k <Plug>(easymotion-k)
-
 " --- Ctags plugin ---
 set tags=tags;/
 " configure tags - add additional tags here
@@ -284,11 +284,6 @@ function! UpdateTags()
     echohl StatusLine | echo "C/C++ tag updated" | echohl None
 endfunction
 "nnoremap <C-L> :call UpdateTags()))
-
-" --- Taglist plugin ---
-let Tlist_Show_One_File = 1
-let Tlist_Use_Right_Window   = 1
-nnoremap <silent> <F6> :TlistToggle<CR>
 
 " --- vim-go plugin ---
 let g:go_highlight_types = 1
@@ -302,9 +297,9 @@ let g:go_highlight_methods = 1
 " let g:go_auto_sameids = 1
 let g:go_def_mapping_enabled = 0 " //for speed, use tags
 let g:go_fmt_command = "goimports"
-let g:go_guru_scope = ["straas.io/..."]
+let g:go_guru_scope = ["straas.io/...", "cloud.google.com/go/..."]
 au FileType go nmap <leader>b <Plug>(go-install)
-au FileType go nmap <C-I> <Plug>(go-info)
+au FileType go nmap <C-f> <Plug>(go-info)
 au FileType go nmap <Leader>e <Plug>(go-rename)
 au FileType go nmap <Leader>l <Plug>(go-metalinter)
 au FileType go nmap <C-]> <Plug>(go-def)
@@ -314,7 +309,7 @@ au FileType go nmap <Leader>ip <Plug>(go-implements)
 au FileType go nmap <leader>t <Plug>(go-alternate-edit)
 
 " --- Tagbar plugin ---
-nmap <F8> :TagbarToggle<CR>
+" nmap <silent> <C-M> :TagbarToggle<CR>
 
 " --- NERDTree plugin ---
 map <leader>r :NERDTreeFind<cr>
@@ -391,11 +386,18 @@ let g:ctrlp_use_caching = 0
 
 
 " --- Vimwiki plugin ---
-let g:vimwiki_list = [{'path': '~/Dropbox/vimwiki/',
-			\'template_path': '~/Dropbox/vimwiki/template/',
-			\'template_default': 'default',
-			\'template_ext': '.html',
-			\'path_html': '~/Dropbox/repo/vimwiki/'}]
+let wiki_default = {}
+let wiki_default.path = '~/Dropbox/vimwiki/'
+let wiki_default.template_path = '~/Dropbox/vimwiki/template/'
+let wiki_default.template_default = 'default'
+let wiki_default.template_ext = '.html'
+let wiki_default.path_html = '~/Dropbox/vimwiki/'
+
+let wiki_gcp = {}
+let wiki_gcp.path = '~/Dropbox/gcpwiki/'
+let wiki_gcp.path_html = '~/Dropbox/gcpwiki/'
+
+let g:vimwiki_list = [wiki_default, wiki_gcp]
 
 " 對中文用戶來說，我們並不怎麼需要駝峰英文成為維基詞條
 let g:vimwiki_camel_case = 0
@@ -408,7 +410,9 @@ let g:vimwiki_folding = 1
 " 是否在計算字串長度時用特別考慮中文字符
 let g:vimwiki_CJK_length = 1
 " 支援html標記符
-let g:vimwiki_valid_html_tags='b,i,s,u,sub,sup,kbd,del,br,hr,div,code,h1,pre'
+let g:vimwiki_valid_html_tags = 'b,i,s,u,sub,sup,kbd,del,br,hr,div,code,h1,pre'
+" 不要縮網址
+let g:vimwiki_url_maxsave = 0
 
 map <F4> :VimwikiAll2HTML<cr>
 "map <F4> :Vimwiki2HTML<cr>
